@@ -11,7 +11,7 @@ public class Main {
     private static Scanner input = new Scanner(System.in);
 
     private static List<Player> players = new ArrayList<>();
-    private static Player currentPlayer = null;;
+    private static Player currentPlayer = null;
 
     public static void main(String[] args) {
         // FileHandler.loadPlayers();

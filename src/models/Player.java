@@ -1,14 +1,11 @@
 package models;
 
-import java.util.List;
 
 import controllers.StorageController;
 import models.items.Item;
-import utils.Tools;
 
 public class Player {
 
-    private String playerID;
     private String playerName;
 
     private StorageController storageController;
@@ -32,7 +29,7 @@ public class Player {
     }
 
     public double getTotalWeight() {
-        return storageController.getInventoryWeight() + storageController.getEquipmentWeight();
+        return (storageController.getInventoryWeight() + storageController.getEquipmentWeight());
     }
 
     public Item[] getInventory() {

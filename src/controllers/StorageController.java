@@ -1,8 +1,5 @@
 package controllers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import models.Equipment;
 import models.Inventory;
 import models.items.Item;
