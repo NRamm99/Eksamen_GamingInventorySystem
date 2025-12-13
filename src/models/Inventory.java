@@ -26,7 +26,7 @@ public class Inventory {
     public String getInventoryStats() {
         StringBuilder stats = new StringBuilder();
         stats.append("Inventory Stats:\n");
-        stats.append("Items: " + slots.size() + " / " + unlockedSlots + "\n");
+        stats.append("Slots Used: " + slots.size() + " / " + unlockedSlots + "\n");
         stats.append("Weight: " + currentWeight() + "kg / " + maxWeight + "kg" + "\n");
         stats.append("Equipped Items: " + equippedItems.size() + "\n");
         for (EquipSlot equipSlot : equippedItems.keySet()) {

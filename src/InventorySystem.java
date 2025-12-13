@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import enums.EquipSlot;
@@ -50,6 +51,7 @@ public class InventorySystem {
 
                     invConsumable.addQuantity(amountToTransfer);
                     consumable.removeQuantity(amountToTransfer);
+
                     return;
                 }
             }
@@ -75,8 +77,11 @@ public class InventorySystem {
     // public List<Item> search(String PLACEHOLDER) {}
 
     // -------- SORTS --------
-    public void sortByWeight() {
+    public List<Item> sortByWeight() {
+        List<Item> sortedItems = new ArrayList<>();
         // PLACEHOLDER
+        
+        return sortedItems;
     }
 
     public void sortByName() {
