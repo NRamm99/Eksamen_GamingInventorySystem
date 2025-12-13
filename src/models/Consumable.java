@@ -44,4 +44,8 @@ public class Consumable extends Item {
     public String shortInfo() {
         return super.shortInfo() + "  |  Quantity: " + quantity + "  |  Max Stack: " + maxStack;
     }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 }

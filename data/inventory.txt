@@ -1,1 +1,6 @@
 SLOTS;32
+C;2;Mana Potion;0.5;10;10
+W;3;Sword;2.0;MAIN_HAND;10
+C;1;Health Potion;0.5;15;10
+W;3;Sword;2.0;MAIN_HAND;10
+C;1;Health Potion;0.5;15;10

@@ -28,16 +28,8 @@ public class InventorySystem {
         System.out.println("Inventory loaded successfully");
     }
 
-    public double currentWeight() {
-        double weight = 0.0;
-        for (Item item : inventory.slots) {
-            weight += item.getWeight();
-        }
-        return weight;
-    }
-
     public boolean canAdd(Item item) throws WeightLimitReachedException, InventoryFullException {
-        if (currentWeight() + item.getWeight() > inventory.maxWeight) {
+        if (inventory.currentWeight() + item.getWeight() > inventory.maxWeight) {
             throw new WeightLimitReachedException("Weight limit reached: (" + inventory.maxWeight + "kg)");
         } else if (inventory.slots.size() >= inventory.maxSlots) {
             throw new InventoryFullException("Inventory is full: (" + inventory.maxSlots + " slots)");
@@ -138,16 +130,7 @@ public class InventorySystem {
     }
 
     public String getInventoryStats() {
-        StringBuilder stats = new StringBuilder();
-        stats.append("Inventory Stats:\n");
-        stats.append("Items: " + inventory.slots.size() + " / " + inventory.unlockedSlots + "\n");
-        stats.append("Weight: " + currentWeight() + "kg / " + inventory.maxWeight + "kg" + "\n");
-        stats.append("Equipped Items: " + inventory.equippedItems.size() + "\n");
-        for (EquipSlot equipSlot : inventory.equippedItems.keySet()) {
-            stats.append(equipSlot + ": " + inventory.equippedItems.get(equipSlot).shortInfo() + "\n");
-        }
-
-        return stats.toString();
+        return inventory.getInventoryStats();
     }
 
     public void resetInventory() {
@@ -158,5 +141,9 @@ public class InventorySystem {
 
     public Inventory getInventory() {
         return inventory;
+    }
+
+    public String getEquipmentStats() {
+        return inventory.getEquipmentStats();
     }
 }
