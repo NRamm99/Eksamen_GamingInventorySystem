@@ -1,6 +1,5 @@
 package models;
 
-import enums.ArmorType;
 import enums.EquipSlot;
 import enums.ItemType;
 

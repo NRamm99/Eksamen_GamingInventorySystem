@@ -2,7 +2,6 @@ import java.io.IOException;
 import java.util.List;
 
 import enums.EquipSlot;
-import enums.WeaponType;
 import exceptions.InvalidEquipSlotException;
 import exceptions.InventoryFullException;
 import exceptions.ItemNotFoundException;
