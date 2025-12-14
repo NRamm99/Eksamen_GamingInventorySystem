@@ -12,7 +12,12 @@ public class Consumable extends Item {
     public Consumable(int id, String name, double weight, int quantity, int maxStack) {
         super(id, name, weight, ItemType.CONSUMABLE);
         this.maxStack = maxStack;
-        setQuantity(quantity);
+        try {
+            setQuantity(quantity);
+        } catch (InvalidQuantityException e) {
+            System.out.println("Error setting quantity: " + e.getMessage());
+            System.exit(1);
+        }
     }
 
     public int getQuantity() {
@@ -47,7 +52,7 @@ public class Consumable extends Item {
         return super.shortInfo() + "  |  Quantity: " + quantity + "  |  Max Stack: " + maxStack + "  |  Stack Weight: " + stackWeight + " kg";
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(int quantity) throws InvalidQuantityException {
         if (quantity < 0 || quantity > maxStack){
             throw new InvalidQuantityException("Quantity must be between 0 and " + maxStack);
         }

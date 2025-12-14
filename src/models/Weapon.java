@@ -25,4 +25,14 @@ public class Weapon extends Item {
     public String shortInfo() {
         return super.shortInfo() + "  |  Weapon Type: " + equipSlot + "  |  Damage: " + damage;
     }
+
+    @Override
+    public String toString() {
+        return "W;" + getId() + ";" + getName() + ";" + getWeight() + ";" + getEquipSlot() + ";" + getDamage();
+    }
+
+    @Override
+    public String equipmentInfo() {
+        return name + " |  Damage: " + damage;
+    }
 }

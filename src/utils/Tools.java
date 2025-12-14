@@ -2,7 +2,13 @@ package utils;
 
 import java.util.Scanner;
 
+import enums.EquipSlot;
+
 public class Tools {
+
+    private Tools() {
+    }
+
     public static void clearConsole() {
         for (int n = 0; n < 20; n++) {
             System.out.println();
@@ -33,6 +39,18 @@ public class Tools {
                 return Integer.parseInt(userStr);
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter a whole number.");
+            }
+        }
+    }
+
+    public static EquipSlot validateEquipSlot(Scanner input, String message) {
+        while (true) {
+            System.out.print(message + ": ");
+            String userStr = input.nextLine().trim().toUpperCase();
+            try {
+                return EquipSlot.valueOf(userStr);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid input. Please enter a valid equip slot.");
             }
         }
     }

@@ -66,8 +66,7 @@ public class InventorySystem {
                         consumable.getName(),
                         consumable.getWeight(),
                         stackAmount,
-                        consumable.getMaxStack()
-                );
+                        consumable.getMaxStack());
 
                 canAdd(newStack);
 
@@ -115,9 +114,13 @@ public class InventorySystem {
 
         if (item instanceof Weapon weapon) {
             EquipSlot equipSlot = weapon.getEquipSlot();
+
+            // Checks if the equip slot is already in use
             if (inventory.equippedItems.containsKey(equipSlot)) {
                 throw new InvalidEquipSlotException("Equip slot already in use: (" + equipSlot + ")");
             }
+
+            // Equips the weapon
             inventory.equippedItems.put(equipSlot, weapon);
             inventory.slots.remove(item);
             return;

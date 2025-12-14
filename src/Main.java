@@ -43,15 +43,45 @@ public class Main {
         }
         // Weapons
         try {
+            // Main Hand
             itemsList.add(new Weapon(3, "Sword", 2.0, EquipSlot.MAIN_HAND, 10));
             itemsList.add(new Weapon(4, "Axe", 3.0, EquipSlot.MAIN_HAND, 15));
+            // Off Hand
+            itemsList.add(new Weapon(7, "Dagger", 1.0, EquipSlot.OFF_HAND, 5));
+            // Ranged
+            itemsList.add(new Weapon(5, "Bow", 2.0, EquipSlot.RANGED, 10));
+            itemsList.add(new Weapon(6, "Crossbow", 3.0, EquipSlot.RANGED, 15));
+            // Two Handed
+            itemsList.add(new Weapon(8, "Greatsword", 5.0, EquipSlot.TWO_HANDED, 20));
         } catch (Exception e) {
             System.out.println("Error adding weapons: " + e.getMessage());
         }
         // Armor
         try {
-            itemsList.add(new Armor(5, "Leather Armor", 2.0, EquipSlot.CHEST, 10));
-            itemsList.add(new Armor(6, "Iron Armor", 3.0, EquipSlot.CHEST, 15));
+            // Head
+            itemsList.add(new Armor(9, "Leather Helmet", 1.0, EquipSlot.HEAD, 5));
+            itemsList.add(new Armor(10, "Iron Helmet", 2.0, EquipSlot.HEAD, 10));
+            // Neck
+            itemsList.add(new Armor(11, "Leather Necklace", 0.5, EquipSlot.NECK, 3));
+            itemsList.add(new Armor(12, "Iron Necklace", 1.0, EquipSlot.NECK, 6));
+            // Shoulders
+            itemsList.add(new Armor(13, "Leather Shoulders", 1.5, EquipSlot.SHOULDERS, 7));
+            itemsList.add(new Armor(14, "Iron Shoulders", 3.0, EquipSlot.SHOULDERS, 14));
+            // Chest
+            itemsList.add(new Armor(15, "Leather Armor", 2.0, EquipSlot.CHEST, 10));
+            itemsList.add(new Armor(16, "Iron Armor", 3.0, EquipSlot.CHEST, 15));
+            // Wrists
+            itemsList.add(new Armor(17, "Leather Bracers", 1.0, EquipSlot.WRISTS, 5));
+            itemsList.add(new Armor(18, "Iron Bracers", 2.0, EquipSlot.WRISTS, 10));
+            // Hands
+            itemsList.add(new Armor(19, "Leather Gloves", 1.5, EquipSlot.HANDS, 7));
+            itemsList.add(new Armor(20, "Iron Gloves", 3.0, EquipSlot.HANDS, 14));
+            // Legs
+            itemsList.add(new Armor(21, "Leather Pants", 2.5, EquipSlot.LEGS, 12));
+            itemsList.add(new Armor(22, "Iron Pants", 5.0, EquipSlot.LEGS, 24));
+            // Feet
+            itemsList.add(new Armor(23, "Leather Boots", 1.5, EquipSlot.FEET, 7));
+            itemsList.add(new Armor(24, "Iron Boots", 3.0, EquipSlot.FEET, 14));
         } catch (Exception e) {
             System.out.println("Error adding armor: " + e.getMessage());
         }
@@ -67,6 +97,7 @@ public class Main {
                 [5] Equip Item
                 [6] Unequip Item
                 [7] Manage Inventory
+                [8] Reset inventory & equipment
 
                 [0] Exit
                 ===============================================
@@ -80,13 +111,7 @@ public class Main {
                 promptViewEquipment();
                 break;
             case 3:
-                try {
-                    promptAddItem();
-                } catch (ItemNotFoundException | StackLimitReachedException | QuantityTooLowException
-                         | WeightLimitReachedException | InventoryFullException | InvalidQuantityException e) {
-                    Tools.printToConsole("Error adding item: " + e.getMessage(), false);
-                    Tools.waitForUser(input);
-                }
+                promptAddItem();
                 break;
             case 4:
                 promptRemoveItem();
@@ -100,6 +125,9 @@ public class Main {
             case 7:
                 promptManageInventory();
                 break;
+            case 8:
+                resetInventory();
+                break;
             case 0:
                 saveInventory();
                 Tools.printToConsole("Exiting program...", false);
@@ -110,6 +138,12 @@ public class Main {
                 Tools.waitForUser(input);
                 break;
         }
+    }
+
+    private static void resetInventory() {
+        inventorySystem.resetInventory();
+        Tools.printToConsole("Inventory and equipment reset successfully.", false);
+        Tools.waitForUser(input);
     }
 
     private static void promptViewInventory() {
@@ -123,23 +157,176 @@ public class Main {
         Tools.waitForUser(input);
     }
 
-    private static void promptAddItem() throws ItemNotFoundException, StackLimitReachedException,
-            QuantityTooLowException, WeightLimitReachedException, InventoryFullException, InvalidQuantityException {
-        printItemsList();
+    private static void promptAddItem() {
 
-        // IMPLEMENT ADD ITEM LOGIC HERE
-        int id = Tools.validateInt(input, "Enter the ID of the item you want to add:");
-        Item item = getItemById(id);
-
-        if (item instanceof Consumable consumable) {
-            int quantity = Tools.validateInt(input, "Enter the quantity of the item you want to add:");
-            consumable.setQuantity(quantity);
-            inventorySystem.add(consumable);
-        } else {
-            inventorySystem.add(item);
+        Tools.printToConsole("""
+                =============== ADD ITEM ===============
+                [1] Add Consumable
+                [2] Add Weapon
+                [3] Add Armor
+                [0] Exit
+                ===============================================
+                """, true);
+        int choice = Tools.validateInt(input, "Enter your choice");
+        switch (choice) {
+            case 1:
+                promptAddConsumable();
+                break;
+            case 2:
+                promptAddWeapon();
+                break;
+            case 3:
+                promptAddArmor();
+                break;
+            case 0:
+                break;
+            default:
+                Tools.printToConsole("Invalid choice. Please try again.", false);
+                Tools.waitForUser(input);
+                break;
         }
-        Tools.printToConsole("Item added successfully.", false);
+
+    }
+
+    private static void promptAddArmor() {
+        printArmorsList();
+        int id = Tools.validateInt(input, "Enter the ID of the armor you want to add:");
+        Item item = null;
+        // Get item by ID
+        try {
+            item = getItemById(id);
+        } catch (ItemNotFoundException e) {
+            Tools.printToConsole("Item not found: " + e.getMessage(), false);
+            Tools.waitForUser(input);
+        }
+        // Check if item is a armor
+        if (!(item instanceof Armor)) {
+            Tools.printToConsole("Item is not a armor.", false);
+            Tools.waitForUser(input);
+            return;
+        }
+        // Validate quantity
+        int quantity = Tools.validateInt(input, "Enter the quantity of the armor you want to add:");
+        // Add armor to inventory
+        for (int i = 0; i < quantity; i++) {
+            try {
+                inventorySystem.add(item);
+            } catch (StackLimitReachedException | QuantityTooLowException | WeightLimitReachedException
+                    | InventoryFullException e) {
+                Tools.printToConsole("Error adding item: " + e.getMessage(), false);
+                Tools.waitForUser(input);
+            }
+        }
+        Tools.printToConsole("Armor added successfully.", false);
         Tools.waitForUser(input);
+    }
+
+    private static void printArmorsList() {
+        Tools.printToConsole("============== ARMORS LIST ==============", false);
+        for (Item item : itemsList) {
+            if (item instanceof Armor) {
+                Tools.printToConsole("#" + item.getId() + " - " + item.getName() + " - " + item.getWeight() + "kg"
+                        + " - " + item.getType(), false);
+            }
+        }
+        Tools.printToConsole("======================================", false);
+    }
+
+    private static void promptAddWeapon() {
+        printWeaponsList();
+        int id = Tools.validateInt(input, "Enter the ID of the weapon you want to add:");
+        Item item = null;
+        // Get item by ID
+        try {
+            item = getItemById(id);
+        } catch (ItemNotFoundException e) {
+            Tools.printToConsole("Item not found: " + e.getMessage(), false);
+            Tools.waitForUser(input);
+        }
+        // Check if item is a weapon
+        if (!(item instanceof Weapon weapon)) {
+            Tools.printToConsole("Item is not a weapon.", false);
+            Tools.waitForUser(input);
+            return;
+        }
+        // Validate quantity
+        int quantity = Tools.validateInt(input,
+                "Enter the quantity of the weapon you want to add");
+        // Add weapon to inventory
+        for (int i = 0; i < quantity; i++) {
+            try {
+                inventorySystem.add(weapon);
+            } catch (StackLimitReachedException | QuantityTooLowException | WeightLimitReachedException
+                    | InventoryFullException e) {
+                Tools.printToConsole("Error adding item: " + e.getMessage(), false);
+                Tools.waitForUser(input);
+            }
+        }
+        Tools.printToConsole("Weapon added successfully.", false);
+        Tools.waitForUser(input);
+    }
+
+    private static void printWeaponsList() {
+        Tools.printToConsole("============== WEAPONS LIST ==============", false);
+        for (Item item : itemsList) {
+            if (item instanceof Weapon) {
+                Tools.printToConsole("#" + item.getId() + " - " + item.getName() + " - " + item.getWeight() + "kg"
+                        + " - " + item.getType(), false);
+            }
+        }
+        Tools.printToConsole("======================================", false);
+    }
+
+    private static void promptAddConsumable() {
+        printConsumablesList();
+        int id = Tools.validateInt(input, "Enter the ID of the consumable you want to add:");
+        Item item = null;
+        // Get item by ID
+        try {
+            item = getItemById(id);
+        } catch (ItemNotFoundException e) {
+            Tools.printToConsole("Item not found: " + e.getMessage(), false);
+            Tools.waitForUser(input);
+        }
+        // Check if item is a consumable
+        if (!(item instanceof Consumable consumable)) {
+            Tools.printToConsole("Item is not a consumable.", false);
+            Tools.waitForUser(input);
+            return;
+        }
+        // Validate quantity
+        int quantity = Tools.validateInt(input,
+                "Enter the quantity of the consumable you want to add: (max: " + consumable.getMaxStack() + ")");
+        // Set quantity
+        try {
+            consumable.setQuantity(quantity);
+        } catch (InvalidQuantityException e) {
+            Tools.printToConsole("Invalid quantity. Please try again.", false);
+            Tools.waitForUser(input);
+            return;
+        }
+        // Add consumable to inventory
+        try {
+            inventorySystem.add(consumable);
+        } catch (StackLimitReachedException | QuantityTooLowException | WeightLimitReachedException
+                | InventoryFullException e) {
+            Tools.printToConsole("Error adding item: " + e.getMessage(), false);
+            Tools.waitForUser(input);
+            return;
+        }
+        Tools.printToConsole("Consumable added successfully.", false);
+        Tools.waitForUser(input);
+
+    }
+
+    private static void printConsumablesList() {
+        Tools.printToConsole("============== CONSUMABLES LIST ==============", false);
+        for (Item item : itemsList) {
+            if (item instanceof Consumable) {
+                Tools.printToConsole("#" + item.getId() + " - " + item.getName() + " - " + item.getWeight() + "kg"
+                        + " - " + item.getType(), false);
+            }
+        }
     }
 
     private static Item getItemById(int id) throws ItemNotFoundException {
@@ -167,16 +354,30 @@ public class Main {
 
     private static void promptEquipItem() {
         Tools.printToConsole(inventorySystem.getInventory().toString(), true);
-        Tools.waitForUser(input);
 
         // IMPLEMENT EQUIP ITEM LOGIC HERE
+        int id = Tools.validateInt(input, "Enter the ID of the item you want to equip:");
+        try {
+            inventorySystem.equip(id);
+        } catch (ItemNotFoundException | InvalidEquipSlotException e) {
+            Tools.printToConsole("Error equipping item: " + e.getMessage(), false);
+            Tools.waitForUser(input);
+        }
+        Tools.printToConsole("Item equipped successfully.", false);
+        Tools.waitForUser(input);
     }
 
     private static void promptUnequipItem() {
         Tools.printToConsole(inventorySystem.getEquipmentStats(), true);
+        EquipSlot equipSlot = Tools.validateEquipSlot(input, "Enter the equip slot of the item you want to unequip:");
+        try {
+            inventorySystem.unequip(equipSlot);
+        } catch (InvalidEquipSlotException e) {
+            Tools.printToConsole("Error unequipping item: " + e.getMessage(), false);
+            Tools.waitForUser(input);
+        }
+        Tools.printToConsole("Item unequipped successfully.", false);
         Tools.waitForUser(input);
-
-        // IMPLEMENT UNEQUIP ITEM LOGIC HERE
     }
 
     private static void promptManageInventory() {
@@ -206,13 +407,5 @@ public class Main {
                 Tools.waitForUser(input);
                 break;
         }
-    }
-
-    private static void printItemsList() {
-        Tools.printToConsole("============== ITEMS LIST ==============", false);
-        for (Item item : itemsList) {
-            Tools.printToConsole("#" + item.getId() + " - " + item.getName() + " - " + item.getWeight() + "kg" + " - " + item.getType(), false);
-        }
-        Tools.printToConsole("======================================", false);
     }
 }

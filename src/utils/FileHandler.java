@@ -35,7 +35,7 @@ public class FileHandler {
             }
 
             for (var e : inv.equippedItems.entrySet()) {
-                w.write("E;" + e.getKey() + ";" + e.getValue());
+                w.write("E;" + e.getKey() + ";" + e.getValue().toString());
                 w.newLine();
             }
         }
@@ -55,7 +55,18 @@ public class FileHandler {
                         EquipSlot.valueOf(p[4]), Integer.parseInt(p[5])));
                 case "C" -> inv.slots.add(new Consumable(Integer.parseInt(p[1]), p[2], Double.parseDouble(p[3]),
                         Integer.parseInt(p[4]), Integer.parseInt(p[5])));
-                case "E" -> inv.equippedItems.put(EquipSlot.valueOf(p[1]), inv.slots.get(Integer.parseInt(p[2])));
+                case "E" -> {
+                    if (p[2].equals("W")) {
+                        Weapon weapon = new Weapon(Integer.parseInt(p[3]), p[4], Double.parseDouble(p[5]),
+                                EquipSlot.valueOf(p[6]), Integer.parseInt(p[7]));
+                        inv.equippedItems.put(EquipSlot.valueOf(p[1]), weapon);
+                    }
+                    if (p[2].equals("A")) {
+                        Armor armor = new Armor(Integer.parseInt(p[3]), p[4], Double.parseDouble(p[5]),
+                                EquipSlot.valueOf(p[6]), Integer.parseInt(p[7]));
+                        inv.equippedItems.put(EquipSlot.valueOf(p[1]), armor);
+                    }
+                }
             }
         }
         return inv;

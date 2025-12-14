@@ -18,7 +18,7 @@ public class Inventory {
     public double currentWeight() {
         double weight = 0.0;
         for (Item item : slots) {
-            if(item instanceof Consumable c) {
+            if (item instanceof Consumable c) {
                 weight += c.getWeight() * c.getQuantity();
             } else {
                 weight += item.getWeight();
@@ -44,9 +44,37 @@ public class Inventory {
     public String getEquipmentStats() {
         StringBuilder stats = new StringBuilder();
         stats.append("============== EQUIPMENT ==============\n");
-        stats.append("Equipped Items: " + equippedItems.size() + "\n");
-        for (EquipSlot equipSlot : equippedItems.keySet()) {
-            stats.append(equipSlot + ": " + equippedItems.get(equipSlot).shortInfo() + "\n");
+        stats.append("Equipped Items: " + equippedItems.size() + "\n\n");
+
+        // calculate total defense and damage
+        int totalDefense = 0;
+        int totalDamage = 0;
+        for (Item item : equippedItems.values()) {
+            if (item instanceof Weapon w) {
+                totalDamage += w.getDamage();
+            }
+            if (item instanceof Armor a) {
+                totalDefense += a.getDefense();
+            }
+        }
+        // print total defense and damage
+        stats.append("Total Defense: " + totalDefense + "\n");
+        stats.append("Total Damage: " + totalDamage + "\n");
+        stats.append("\n");
+
+        // print equipment info for each slot
+        for (EquipSlot slot : EquipSlot.values()) {
+            // skip two handed slot in equipment stats
+            if (slot == EquipSlot.TWO_HANDED)
+                continue;
+
+            Item item = equippedItems.get(slot);
+
+            if (item == null) {
+                stats.append(slot + ": <empty>\n");
+            } else {
+                stats.append(slot + ": " + item.equipmentInfo() + "\n");
+            }
         }
         stats.append("======================================\n");
         return stats.toString();

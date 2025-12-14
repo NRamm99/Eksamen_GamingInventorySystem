@@ -35,4 +35,8 @@ public abstract class Item {
         return "Item ID: " + id + "  |  Name: " + name + "  |  Weight: " + weight + " kg" + "  |  Type: " + type;
     }
 
+    public String equipmentInfo() {
+        return name + " kg" + "  |  Type: " + type + "  |  Weight: " + weight;
+    }
+
 }

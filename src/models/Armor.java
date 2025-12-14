@@ -25,4 +25,14 @@ public class Armor extends Item {
     public String shortInfo() {
         return super.shortInfo() + "  |  Equip Slot: " + equipSlot + "  |  Defense: " + defense;
     }
+
+    @Override
+    public String toString() {
+        return "A;" + getId() + ";" + getName() + ";" + getWeight() + ";" + getEquipSlot() + ";" + getDefense();
+    }
+
+    @Override
+    public String equipmentInfo() {
+        return name + " |  Defense: " + defense;
+    }
 }
