@@ -119,6 +119,21 @@ public class InventorySystem {
             if (inventory.equippedItems.containsKey(equipSlot)) {
                 throw new InvalidEquipSlotException("Equip slot already in use: (" + equipSlot + ")");
             }
+            // Checks if the weapon is two handed and the off hand is already in use
+            if (weapon.isTwoHanded() && (inventory.equippedItems.containsKey(EquipSlot.OFF_HAND))) {
+                throw new InvalidEquipSlotException("Player is already holding a weapon in the off hand");
+            }
+
+            // Checks if the weapon is OFF_HAND
+            if (equipSlot == EquipSlot.OFF_HAND) {
+                // Checks if the player is already holding a two handed weapon in the main hand
+                if (inventory.equippedItems.containsKey(EquipSlot.MAIN_HAND)) {
+                    Weapon mainHand = (Weapon) inventory.equippedItems.get(EquipSlot.MAIN_HAND);
+                    if (mainHand.isTwoHanded()) {
+                        throw new InvalidEquipSlotException("Player is already holding a two handed weapon.");
+                    }
+                }
+            }
 
             // Equips the weapon
             inventory.equippedItems.put(equipSlot, weapon);

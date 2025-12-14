@@ -1,5 +1,3 @@
 SLOTS;32
-C;2;Mana Potion;0.2;1;3
-W;3;Sword;2.0;MAIN_HAND;10
-W;3;Sword;2.0;MAIN_HAND;10
-E;CHEST;A;6;Iron Armor;3.0;CHEST;15
+W;7;Dagger;1.0;OFF_HAND;5;false
+E;MAIN_HAND;W;8;Greatsword;5.0;MAIN_HAND;20;true

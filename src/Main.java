@@ -44,15 +44,15 @@ public class Main {
         // Weapons
         try {
             // Main Hand
-            itemsList.add(new Weapon(3, "Sword", 2.0, EquipSlot.MAIN_HAND, 10));
-            itemsList.add(new Weapon(4, "Axe", 3.0, EquipSlot.MAIN_HAND, 15));
+            itemsList.add(new Weapon(3, "Sword", 2.0, EquipSlot.MAIN_HAND, 10, false));
+            itemsList.add(new Weapon(4, "Axe", 3.0, EquipSlot.MAIN_HAND, 15, false));
             // Off Hand
-            itemsList.add(new Weapon(7, "Dagger", 1.0, EquipSlot.OFF_HAND, 5));
+            itemsList.add(new Weapon(7, "Dagger", 1.0, EquipSlot.OFF_HAND, 5, false));
             // Ranged
-            itemsList.add(new Weapon(5, "Bow", 2.0, EquipSlot.RANGED, 10));
-            itemsList.add(new Weapon(6, "Crossbow", 3.0, EquipSlot.RANGED, 15));
+            itemsList.add(new Weapon(5, "Bow", 2.0, EquipSlot.RANGED, 10, false));
+            itemsList.add(new Weapon(6, "Crossbow", 3.0, EquipSlot.RANGED, 15, false));
             // Two Handed
-            itemsList.add(new Weapon(8, "Greatsword", 5.0, EquipSlot.TWO_HANDED, 20));
+            itemsList.add(new Weapon(8, "Greatsword", 5.0, EquipSlot.MAIN_HAND, 20, true));
         } catch (Exception e) {
             System.out.println("Error adding weapons: " + e.getMessage());
         }
@@ -363,8 +363,6 @@ public class Main {
             Tools.printToConsole("Error equipping item: " + e.getMessage(), false);
             Tools.waitForUser(input);
         }
-        Tools.printToConsole("Item equipped successfully.", false);
-        Tools.waitForUser(input);
     }
 
     private static void promptUnequipItem() {

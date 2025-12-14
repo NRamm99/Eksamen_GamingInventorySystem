@@ -64,9 +64,6 @@ public class Inventory {
 
         // print equipment info for each slot
         for (EquipSlot slot : EquipSlot.values()) {
-            // skip two handed slot in equipment stats
-            if (slot == EquipSlot.TWO_HANDED)
-                continue;
 
             Item item = equippedItems.get(slot);
 

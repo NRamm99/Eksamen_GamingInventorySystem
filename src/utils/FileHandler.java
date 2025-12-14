@@ -24,7 +24,7 @@ public class FileHandler {
             for (Item i : inv.slots) {
                 if (i instanceof Weapon we)
                     w.write("W;" + we.getId() + ";" + we.getName() + ";" + we.getWeight() + ";" + we.getEquipSlot()
-                            + ";" + we.getDamage());
+                            + ";" + we.getDamage() + ";" + we.isTwoHanded());
                 if (i instanceof Armor a)
                     w.write("A;" + a.getId() + ";" + a.getName() + ";" + a.getWeight() + ";" + a.getEquipSlot() + ";"
                             + a.getDefense());
@@ -35,7 +35,16 @@ public class FileHandler {
             }
 
             for (var e : inv.equippedItems.entrySet()) {
-                w.write("E;" + e.getKey() + ";" + e.getValue().toString());
+                if (e.getValue() instanceof Weapon we) {
+                    w.write("E;" + e.getKey() + ";" + "W;" + we.getId() + ";" + we.getName() + ";" + we.getWeight() + ";"
+                            + we.getEquipSlot()
+                            + ";" + we.getDamage() + ";" + we.isTwoHanded());
+                }
+                if (e.getValue() instanceof Armor a) {
+                    w.write("E;" + e.getKey() + ";" + "A;" + a.getId() + ";" + a.getName() + ";" + a.getWeight() + ";"
+                            + a.getEquipSlot()
+                            + ";" + a.getDefense());
+                }
                 w.newLine();
             }
         }
@@ -50,7 +59,7 @@ public class FileHandler {
             switch (p[0]) {
                 case "SLOTS" -> inv.unlockedSlots = Integer.parseInt(p[1]);
                 case "W" -> inv.slots.add(new Weapon(Integer.parseInt(p[1]), p[2], Double.parseDouble(p[3]),
-                        EquipSlot.valueOf(p[4]), Integer.parseInt(p[5])));
+                        EquipSlot.valueOf(p[4]), Integer.parseInt(p[5]), Boolean.parseBoolean(p[6])));
                 case "A" -> inv.slots.add(new Armor(Integer.parseInt(p[1]), p[2], Double.parseDouble(p[3]),
                         EquipSlot.valueOf(p[4]), Integer.parseInt(p[5])));
                 case "C" -> inv.slots.add(new Consumable(Integer.parseInt(p[1]), p[2], Double.parseDouble(p[3]),
@@ -58,7 +67,7 @@ public class FileHandler {
                 case "E" -> {
                     if (p[2].equals("W")) {
                         Weapon weapon = new Weapon(Integer.parseInt(p[3]), p[4], Double.parseDouble(p[5]),
-                                EquipSlot.valueOf(p[6]), Integer.parseInt(p[7]));
+                                EquipSlot.valueOf(p[6]), Integer.parseInt(p[7]), Boolean.parseBoolean(p[8]));
                         inv.equippedItems.put(EquipSlot.valueOf(p[1]), weapon);
                     }
                     if (p[2].equals("A")) {
