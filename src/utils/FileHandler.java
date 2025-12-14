@@ -6,6 +6,7 @@ import java.nio.file.*;
 import java.util.List;
 
 import enums.EquipSlot;
+import exceptions.InvalidQuantityException;
 import models.Armor;
 import models.Consumable;
 import models.Inventory;
@@ -40,7 +41,7 @@ public class FileHandler {
         }
     }
 
-    public static Inventory load() throws IOException {
+    public static Inventory load() throws IOException, InvalidQuantityException {
         Inventory inv = new Inventory();
         List<String> lines = Files.readAllLines(Paths.get(INVENTORY_PATH));
 

@@ -1,6 +1,7 @@
 package models;
 
 import enums.ItemType;
+import exceptions.InvalidQuantityException;
 import exceptions.QuantityTooLowException;
 import exceptions.StackLimitReachedException;
 
@@ -10,8 +11,8 @@ public class Consumable extends Item {
 
     public Consumable(int id, String name, double weight, int quantity, int maxStack) {
         super(id, name, weight, ItemType.CONSUMABLE);
-        this.quantity = quantity;
         this.maxStack = maxStack;
+        setQuantity(quantity);
     }
 
     public int getQuantity() {
@@ -42,10 +43,14 @@ public class Consumable extends Item {
 
     @Override
     public String shortInfo() {
-        return super.shortInfo() + "  |  Quantity: " + quantity + "  |  Max Stack: " + maxStack;
+        double stackWeight = getWeight() * quantity;
+        return super.shortInfo() + "  |  Quantity: " + quantity + "  |  Max Stack: " + maxStack + "  |  Stack Weight: " + stackWeight + " kg";
     }
 
     public void setQuantity(int quantity) {
+        if (quantity < 0 || quantity > maxStack){
+            throw new InvalidQuantityException("Quantity must be between 0 and " + maxStack);
+        }
         this.quantity = quantity;
     }
 }

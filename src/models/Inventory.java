@@ -18,8 +18,13 @@ public class Inventory {
     public double currentWeight() {
         double weight = 0.0;
         for (Item item : slots) {
-            weight += item.getWeight();
+            if(item instanceof Consumable c) {
+                weight += c.getWeight() * c.getQuantity();
+            } else {
+                weight += item.getWeight();
+            }
         }
+
         return weight;
     }
 
