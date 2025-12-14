@@ -4,11 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import enums.EquipSlot;
-import exceptions.InventoryFullException;
-import exceptions.ItemNotFoundException;
-import exceptions.QuantityTooLowException;
-import exceptions.StackLimitReachedException;
-import exceptions.WeightLimitReachedException;
+import exceptions.*;
 import models.Armor;
 import models.Consumable;
 import models.Item;
@@ -40,8 +36,8 @@ public class Main {
     private static void initializeItemsList() {
         // Consumables
         try {
-            itemsList.add(new Consumable(1, "Health Potion", 0.5, 10, 10));
-            itemsList.add(new Consumable(2, "Mana Potion", 0.5, 10, 10));
+            itemsList.add(new Consumable(1, "Health Potion", 0.2, 1, 3));
+            itemsList.add(new Consumable(2, "Mana Potion", 0.2, 1, 3));
         } catch (Exception e) {
             System.out.println("Error adding consumables: " + e.getMessage());
         }
@@ -87,7 +83,7 @@ public class Main {
                 try {
                     promptAddItem();
                 } catch (ItemNotFoundException | StackLimitReachedException | QuantityTooLowException
-                        | WeightLimitReachedException | InventoryFullException e) {
+                         | WeightLimitReachedException | InventoryFullException | InvalidQuantityException e) {
                     Tools.printToConsole("Error adding item: " + e.getMessage(), false);
                     Tools.waitForUser(input);
                 }
@@ -128,7 +124,7 @@ public class Main {
     }
 
     private static void promptAddItem() throws ItemNotFoundException, StackLimitReachedException,
-            QuantityTooLowException, WeightLimitReachedException, InventoryFullException {
+            QuantityTooLowException, WeightLimitReachedException, InventoryFullException, InvalidQuantityException {
         printItemsList();
 
         // IMPLEMENT ADD ITEM LOGIC HERE

@@ -3,12 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import enums.EquipSlot;
-import exceptions.InvalidEquipSlotException;
-import exceptions.InventoryFullException;
-import exceptions.ItemNotFoundException;
-import exceptions.QuantityTooLowException;
-import exceptions.StackLimitReachedException;
-import exceptions.WeightLimitReachedException;
+import exceptions.*;
 import models.Armor;
 import models.Consumable;
 import models.Inventory;
@@ -25,23 +20,31 @@ public class InventorySystem {
         } catch (IOException e) {
             this.inventory = new Inventory();
             System.out.println("Error loading inventory: " + e.getMessage());
+        } catch (InvalidQuantityException e) {
+            System.out.println("Corrupt inventory data: " + e.getMessage());
+            System.out.println("Fix: 'data/inventory.txt' and restart the program ");
+            System.exit(1);
         }
         System.out.println("Inventory loaded successfully");
     }
 
-    public boolean canAdd(Item item) throws WeightLimitReachedException, InventoryFullException {
+    public void canAdd(Item item) throws WeightLimitReachedException, InventoryFullException {
         if (inventory.currentWeight() + item.getWeight() > inventory.maxWeight) {
             throw new WeightLimitReachedException("Weight limit reached: (" + inventory.maxWeight + "kg)");
-        } else if (inventory.slots.size() >= inventory.maxSlots) {
-            throw new InventoryFullException("Inventory is full: (" + inventory.maxSlots + " slots)");
+        } else if (inventory.slots.size() >= inventory.unlockedSlots) {
+            throw new InventoryFullException("Inventory is full: (" + inventory.unlockedSlots + " slots unlocked)");
         }
-        return true;
     }
 
     public void add(Item item) throws StackLimitReachedException, QuantityTooLowException, WeightLimitReachedException,
             InventoryFullException {
+
         if (item instanceof Consumable consumable) {
+
+            // Fills out existing stacks
+
             for (Item invItem : inventory.slots) {
+
                 if (invItem instanceof Consumable invConsumable
                         && invConsumable.getName().equals(consumable.getName())
                         && invConsumable.getQuantity() < invConsumable.getMaxStack()) {
@@ -51,16 +54,30 @@ public class InventorySystem {
 
                     invConsumable.addQuantity(amountToTransfer);
                     consumable.removeQuantity(amountToTransfer);
-
-                    return;
                 }
             }
-        }
 
-        if (!canAdd(item)) {
-            // canAdd will throw the appropriate exception
+            // Creates new stack if there is leftovers
+            while (consumable.getQuantity() > 0) {
+                int stackAmount = Math.min(consumable.getQuantity(), consumable.getMaxStack());
+
+                Consumable newStack = new Consumable(
+                        consumable.getId(),
+                        consumable.getName(),
+                        consumable.getWeight(),
+                        stackAmount,
+                        consumable.getMaxStack()
+                );
+
+                canAdd(newStack);
+
+                inventory.slots.add(newStack);
+                consumable.removeQuantity(stackAmount);
+            }
             return;
         }
+
+        canAdd(item);
         inventory.slots.add(item);
     }
 
@@ -80,7 +97,7 @@ public class InventorySystem {
     public List<Item> sortByWeight() {
         List<Item> sortedItems = new ArrayList<>();
         // PLACEHOLDER
-        
+
         return sortedItems;
     }
 
