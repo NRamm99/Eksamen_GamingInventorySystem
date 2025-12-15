@@ -97,7 +97,8 @@ public class Main {
                 [5] Equip Item
                 [6] Unequip Item
                 [7] Manage Inventory
-                [8] Reset inventory & equipment
+                [8] Find items
+                [9] Reset inventory & equipment
 
                 [0] Exit
                 ===============================================
@@ -126,6 +127,9 @@ public class Main {
                 promptManageInventory();
                 break;
             case 8:
+                findItemById();
+                break;
+            case 9:
                 resetInventory();
                 break;
             case 0:
@@ -405,5 +409,43 @@ public class Main {
                 Tools.waitForUser(input);
                 break;
         }
+    }
+
+    private static void findItemById() {
+        int id = Tools.validateInt(input, "Enter the ID of the item you want to find:");
+
+        String itemName = "";
+        int totalAmount = 0;
+
+        // Get the item name from the master item list
+        for (Item item : itemsList) {
+            if (item.getId() == id) {
+                itemName = item.getName();
+                break;
+            }
+        }
+
+        // If item ID doesn't exist at all
+        if (itemName.isEmpty()) {
+            Tools.printToConsole("Item (" + id + ") does not exist.", false);
+            Tools.waitForUser(input);
+            return;
+        }
+
+        for (Item item : inventorySystem.getInventory().slots) {
+            if (item.getId() == id) {
+                if (item instanceof Consumable consumable) {
+                    totalAmount += consumable.getQuantity();
+                } else {
+                    totalAmount++;
+                }
+            }
+        }
+
+        // Output result
+        Tools.printToConsole("");
+        Tools.printToConsole("Name: " + itemName, false);
+        Tools.printToConsole("Amount carried: " + totalAmount, false);
+        Tools.waitForUser(input);
     }
 }
