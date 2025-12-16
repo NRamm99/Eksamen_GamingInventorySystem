@@ -1,5 +1,8 @@
 SLOTS;32
 W;7;Dagger;1.0;OFF_HAND;5;false
-C;1;Health Potion;0.2;3;3
-C;1;Health Potion;0.2;3;3
-E;MAIN_HAND;W;8;Greatsword;5.0;MAIN_HAND;20;true
+W;7;Dagger;1.0;OFF_HAND;5;false
+W;7;Dagger;1.0;OFF_HAND;5;false
+W;3;Sword;2.0;MAIN_HAND;10;false
+A;20;Iron Gloves;3.0;HANDS;14
+A;20;Iron Gloves;3.0;HANDS;14
+C;2;Mana Potion;0.2;3;3

@@ -395,7 +395,7 @@ public class Main {
                 [0] Exit
                 ===============================================
                 """, true);
-        int choice = input.nextInt();
+        int choice = Tools.validateInt(input, "Enter your choice");
         switch (choice) {
             case 1:
                 inventorySystem.sortByWeight();
@@ -430,7 +430,7 @@ public class Main {
 
         if (choice == 1) {
             inventorySystem.expandInventorySlots();
-            
+
             int after = inventorySystem.getInventory().unlockedSlots;
 
             if (after == current) {
@@ -441,8 +441,16 @@ public class Main {
 
             Tools.waitForUser(input);
         }
-   
-      private static void findItemById() {
+
+        if (choice != 1 && choice != 2) {
+            Tools.printToConsole("Invalid choice.", false);
+            Tools.waitForUser(input);
+        }
+    }
+
+    private static void findItemById() {
+        Tools.printToConsole(inventorySystem.getInventory().toString(), true);
+
         int id = Tools.validateInt(input, "Enter the ID of the item you want to find:");
 
         String itemName = "";

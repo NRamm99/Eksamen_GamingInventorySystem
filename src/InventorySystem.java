@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import enums.EquipSlot;
@@ -90,15 +89,13 @@ public class InventorySystem {
         throw new ItemNotFoundException("Item not found: (" + id + ")");
     }
 
-    // public List<Item> search(String PLACEHOLDER) {}
-
     // -------- SORTS --------
     // Bubble sort for item weight of List<Item>
     // ArrayList that contains references to items
     // Array ───────────────▶ List
-    //            ├── ref → Item A
-    //            ├── ref → Item B
-    //            └── ref → Item C
+    // ├── ref → Item A
+    // ├── ref → Item B
+    // └── ref → Item C
     public void sortByWeight() {
         List<Item> array = inventory.slots;
         // Array size (unsorted range)
@@ -123,14 +120,60 @@ public class InventorySystem {
             // Unsorted part of the list
             size -= 1;
         } while (swapped);
+
     }
 
     public void sortByName() {
-        // PLACEHOLDER
+        List<Item> array = inventory.slots;
+        // Array size (unsorted range)
+        int size = array.size();
+        boolean swapped;
+
+        do {
+            swapped = false;
+
+            for (int i = 0; i < size - 1; i++) {
+                // Compares the two getName() values from Item
+                if (array.get(i).getName().compareTo(array.get(i + 1).getName()) > 0) {
+                    // Temporarily store the current item references as temp
+                    Item temp = array.get(i);
+                    // Swap array[i] and array[i + 1] [references]
+                    array.set(i, array.get(i + 1));
+                    array.set(i + 1, temp);
+
+                    swapped = true;
+                }
+            }
+            // Unsorted part of the list
+            size -= 1;
+        } while (swapped);
+
     }
 
     public void sortByType() {
-        // PLACEHOLDER
+        List<Item> array = inventory.slots;
+        // Array size (unsorted range)
+        int size = array.size();
+        boolean swapped;
+
+        do {
+            swapped = false;
+
+            for (int i = 0; i < size - 1; i++) {
+                // Compares the two getType() values from Item
+                if (array.get(i).getType().compareTo(array.get(i + 1).getType()) > 0) {
+                    // Temporarily store the current item references as temp
+                    Item temp = array.get(i);
+                    // Swap array[i] and array[i + 1] [references]
+                    array.set(i, array.get(i + 1));
+                    array.set(i + 1, temp);
+
+                    swapped = true;
+                }
+            }
+            // Unsorted part of the list
+            size -= 1;
+        } while (swapped);
     }
 
     // -------- EQUIPMENT --------
