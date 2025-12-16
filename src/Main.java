@@ -43,15 +43,15 @@ public class Main {
         }
         // Weapons
         try {
-            // Main Hand
+            // Main_Hand
             itemsList.add(new Weapon(3, "Sword", 2.0, EquipSlot.MAIN_HAND, 10, false));
             itemsList.add(new Weapon(4, "Axe", 3.0, EquipSlot.MAIN_HAND, 15, false));
-            // Off Hand
+            // Off_Hand
             itemsList.add(new Weapon(7, "Dagger", 1.0, EquipSlot.OFF_HAND, 5, false));
             // Ranged
             itemsList.add(new Weapon(5, "Bow", 2.0, EquipSlot.RANGED, 10, false));
             itemsList.add(new Weapon(6, "Crossbow", 3.0, EquipSlot.RANGED, 15, false));
-            // Two Handed
+            // Two_Handed
             itemsList.add(new Weapon(8, "Greatsword", 5.0, EquipSlot.MAIN_HAND, 20, true));
         } catch (Exception e) {
             System.out.println("Error adding weapons: " + e.getMessage());
@@ -97,8 +97,9 @@ public class Main {
                 [5] Equip Item
                 [6] Unequip Item
                 [7] Manage Inventory
-                [8] Find items
-                [9] Reset inventory & equipment
+                [8] Expand Inventory
+                [9] Find items
+                [10] Reset inventory & equipment
 
                 [0] Exit
                 ===============================================
@@ -127,9 +128,12 @@ public class Main {
                 promptManageInventory();
                 break;
             case 8:
-                findItemById();
+                promptExpandInventory();
                 break;
             case 9:
+                findItemById();
+                break;
+            case 10:
                 resetInventory();
                 break;
             case 0:
@@ -203,7 +207,7 @@ public class Main {
             Tools.printToConsole("Item not found: " + e.getMessage(), false);
             Tools.waitForUser(input);
         }
-        // Check if item is a armor
+        // Check if item is an armor
         if (!(item instanceof Armor)) {
             Tools.printToConsole("Item is not a armor.", false);
             Tools.waitForUser(input);
@@ -411,7 +415,34 @@ public class Main {
         }
     }
 
-    private static void findItemById() {
+    private static void promptExpandInventory() {
+        int current = inventorySystem.getInventory().unlockedSlots;
+        int max = inventorySystem.getInventory().maxSlots;
+
+        Tools.printToConsole("=============== EXPAND INVENTORY ===============\n"
+                + "Current unlocked slots: " + current + " / " + max + "\n\n"
+                + "Are you sure you want to expand inventory with +32 slots?\n\n"
+                + "[1] Yes\n"
+                + "[2] No (Back to Main menu)\n"
+                + "===============================================", true);
+
+        int choice = Tools.validateInt(input, "Enter your choice");
+
+        if (choice == 1) {
+            inventorySystem.expandInventorySlots();
+            
+            int after = inventorySystem.getInventory().unlockedSlots;
+
+            if (after == current) {
+                Tools.printToConsole("Inventory is already at max slots: " + after, false);
+            } else {
+                Tools.printToConsole("Inventory expanded: " + current + " -> " + after, false);
+            }
+
+            Tools.waitForUser(input);
+        }
+   
+      private static void findItemById() {
         int id = Tools.validateInt(input, "Enter the ID of the item you want to find:");
 
         String itemName = "";

@@ -211,4 +211,10 @@ public class InventorySystem {
     public String getEquipmentStats() {
         return inventory.getEquipmentStats();
     }
+
+    public void expandInventorySlots() {
+        if (inventory.unlockedSlots < inventory.maxSlots) {
+            inventory.unlockedSlots += 32;
+        }
+    }
 }
