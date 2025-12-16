@@ -18,10 +18,10 @@ public class FileHandler {
 
     public static void save(Inventory inv) throws IOException {
         try (BufferedWriter w = Files.newBufferedWriter(Paths.get(INVENTORY_PATH))) {
-            w.write("SLOTS;" + inv.unlockedSlots);
+            w.write("SLOTS;" + inv.getUnlockedSlots());
             w.newLine();
 
-            for (Item i : inv.slots) {
+            for (Item i : inv.getSlots()) {
                 if (i instanceof Weapon we)
                     w.write("W;" + we.getId() + ";" + we.getName() + ";" + we.getWeight() + ";" + we.getEquipSlot()
                             + ";" + we.getDamage() + ";" + we.isTwoHanded());
@@ -34,7 +34,7 @@ public class FileHandler {
                 w.newLine();
             }
 
-            for (var e : inv.equippedItems.entrySet()) {
+            for (var e : inv.getEquippedItems().entrySet()) {
                 if (e.getValue() instanceof Weapon we) {
                     w.write("E;" + e.getKey() + ";" + "W;" + we.getId() + ";" + we.getName() + ";" + we.getWeight() + ";"
                             + we.getEquipSlot()
@@ -57,23 +57,23 @@ public class FileHandler {
         for (String l : lines) {
             String[] p = l.split(";");
             switch (p[0]) {
-                case "SLOTS" -> inv.unlockedSlots = Integer.parseInt(p[1]);
-                case "W" -> inv.slots.add(new Weapon(Integer.parseInt(p[1]), p[2], Double.parseDouble(p[3]),
+                case "SLOTS" -> inv.setUnlockedSlots(Integer.parseInt(p[1]));
+                case "W" -> inv.getSlots().add(new Weapon(Integer.parseInt(p[1]), p[2], Double.parseDouble(p[3]),
                         EquipSlot.valueOf(p[4]), Integer.parseInt(p[5]), Boolean.parseBoolean(p[6])));
-                case "A" -> inv.slots.add(new Armor(Integer.parseInt(p[1]), p[2], Double.parseDouble(p[3]),
+                case "A" -> inv.getSlots().add(new Armor(Integer.parseInt(p[1]), p[2], Double.parseDouble(p[3]),
                         EquipSlot.valueOf(p[4]), Integer.parseInt(p[5])));
-                case "C" -> inv.slots.add(new Consumable(Integer.parseInt(p[1]), p[2], Double.parseDouble(p[3]),
+                case "C" -> inv.getSlots().add(new Consumable(Integer.parseInt(p[1]), p[2], Double.parseDouble(p[3]),
                         Integer.parseInt(p[4]), Integer.parseInt(p[5])));
                 case "E" -> {
                     if (p[2].equals("W")) {
                         Weapon weapon = new Weapon(Integer.parseInt(p[3]), p[4], Double.parseDouble(p[5]),
                                 EquipSlot.valueOf(p[6]), Integer.parseInt(p[7]), Boolean.parseBoolean(p[8]));
-                        inv.equippedItems.put(EquipSlot.valueOf(p[1]), weapon);
+                        inv.getEquippedItems().put(EquipSlot.valueOf(p[1]), weapon);
                     }
                     if (p[2].equals("A")) {
                         Armor armor = new Armor(Integer.parseInt(p[3]), p[4], Double.parseDouble(p[5]),
                                 EquipSlot.valueOf(p[6]), Integer.parseInt(p[7]));
-                        inv.equippedItems.put(EquipSlot.valueOf(p[1]), armor);
+                        inv.getEquippedItems().put(EquipSlot.valueOf(p[1]), armor);
                     }
                 }
             }

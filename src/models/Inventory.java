@@ -8,12 +8,16 @@ import java.util.Map;
 import enums.EquipSlot;
 
 public class Inventory {
-    public final List<Item> slots = new ArrayList<>();
-    public final Map<EquipSlot, Item> equippedItems = new EnumMap<>(EquipSlot.class);
+    public static final int DEFAULT_UNLOCKED_SLOTS = 32; // 32 slots
+    public static final int MAX_SLOTS = 192; // 192 slots
+    public static final double MAX_WEIGHT = 50.0; // 50kg
 
-    public int unlockedSlots = 32;
-    public final int maxSlots = 192;
-    public final double maxWeight = 50.0;
+    private List<Item> slots = new ArrayList<>();
+    private Map<EquipSlot, Item> equippedItems = new EnumMap<>(EquipSlot.class);
+
+    private int unlockedSlots = DEFAULT_UNLOCKED_SLOTS;
+    private int maxSlots = MAX_SLOTS;
+    private double maxWeight = MAX_WEIGHT;
 
     public double currentWeight() {
         double weight = 0.0;
@@ -89,4 +93,37 @@ public class Inventory {
         inventory.append("======================================\n");
         return inventory.toString();
     }
+
+    public List<Item> getSlots() {
+        return slots;
+    }
+
+    public void setSlots(List<Item> array) {
+        slots = array;
+    }
+
+    public int getUnlockedSlots() {
+        return unlockedSlots;
+    }
+
+    public void setUnlockedSlots(int unlockedSlots) {
+        this.unlockedSlots = unlockedSlots;
+    }
+
+    public int getMaxSlots() {
+        return maxSlots;
+    }
+
+    public double getMaxWeight() {
+        return maxWeight;
+    }
+
+    public Map<EquipSlot, Item> getEquippedItems() {
+        return equippedItems;
+    }
+
+    public void setEquippedItems(Map<EquipSlot, Item> equippedItems) {
+        this.equippedItems = equippedItems;
+    }
+
 }
