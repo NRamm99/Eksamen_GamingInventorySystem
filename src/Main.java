@@ -98,7 +98,8 @@ public class Main {
                 [6] Unequip Item
                 [7] Manage Inventory
                 [8] Expand Inventory
-                [9] Reset inventory & equipment
+                [9] Find items
+                [10] Reset inventory & equipment
 
                 [0] Exit
                 ===============================================
@@ -130,6 +131,9 @@ public class Main {
                 promptExpandInventory();
                 break;
             case 9:
+                findItemById();
+                break;
+            case 10:
                 resetInventory();
                 break;
             case 0:
@@ -426,8 +430,7 @@ public class Main {
 
         if (choice == 1) {
             inventorySystem.expandInventorySlots();
-            saveInventory();
-
+            
             int after = inventorySystem.getInventory().unlockedSlots;
 
             if (after == current) {
@@ -438,5 +441,42 @@ public class Main {
 
             Tools.waitForUser(input);
         }
+   
+      private static void findItemById() {
+        int id = Tools.validateInt(input, "Enter the ID of the item you want to find:");
+
+        String itemName = "";
+        int totalAmount = 0;
+
+        // Get the item name from the master item list
+        for (Item item : itemsList) {
+            if (item.getId() == id) {
+                itemName = item.getName();
+                break;
+            }
+        }
+
+        // If item ID doesn't exist at all
+        if (itemName.isEmpty()) {
+            Tools.printToConsole("Item (" + id + ") does not exist.", false);
+            Tools.waitForUser(input);
+            return;
+        }
+
+        for (Item item : inventorySystem.getInventory().slots) {
+            if (item.getId() == id) {
+                if (item instanceof Consumable consumable) {
+                    totalAmount += consumable.getQuantity();
+                } else {
+                    totalAmount++;
+                }
+            }
+        }
+
+        // Output result
+        Tools.printToConsole("");
+        Tools.printToConsole("Name: " + itemName, false);
+        Tools.printToConsole("Amount carried: " + totalAmount, false);
+        Tools.waitForUser(input);
     }
 }

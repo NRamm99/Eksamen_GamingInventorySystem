@@ -93,11 +93,36 @@ public class InventorySystem {
     // public List<Item> search(String PLACEHOLDER) {}
 
     // -------- SORTS --------
-    public List<Item> sortByWeight() {
-        List<Item> sortedItems = new ArrayList<>();
-        // PLACEHOLDER
+    // Bubble sort for item weight of List<Item>
+    // ArrayList that contains references to items
+    // Array ───────────────▶ List
+    //            ├── ref → Item A
+    //            ├── ref → Item B
+    //            └── ref → Item C
+    public void sortByWeight() {
+        List<Item> array = inventory.slots;
+        // Array size (unsorted range)
+        int size = array.size();
+        boolean swapped;
 
-        return sortedItems;
+        do {
+            swapped = false;
+
+            for (int i = 0; i < size - 1; i++) {
+                // Compares the two getWeight() values from Item
+                if (array.get(i).getWeight() > array.get(i + 1).getWeight()) {
+                    // Temporarily store the current item references as temp
+                    Item temp = array.get(i);
+                    // Swap array[i] and array[i + 1] [references]
+                    array.set(i, array.get(i + 1));
+                    array.set(i + 1, temp);
+
+                    swapped = true;
+                }
+            }
+            // Unsorted part of the list
+            size -= 1;
+        } while (swapped);
     }
 
     public void sortByName() {
