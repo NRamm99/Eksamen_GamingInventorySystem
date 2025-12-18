@@ -32,7 +32,7 @@ public abstract class Item {
     }
 
     public String shortInfo() {
-        return "Item ID: " + id + "  |  Name: " + name + "  |  Weight: " + weight + " kg" + "  |  Type: " + type;
+        return "Item ID: " + id + "  |  Name: " + name + "  |  Weight: " + String.format("%.2f", weight) + " kg" + "  |  Type: " + type;
     }
 
     public String equipmentInfo() {

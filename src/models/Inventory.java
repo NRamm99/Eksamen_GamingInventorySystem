@@ -36,7 +36,8 @@ public class Inventory {
         StringBuilder stats = new StringBuilder();
         stats.append("Inventory Stats:\n");
         stats.append("Slots Used: " + slots.size() + " / " + unlockedSlots + "\n");
-        stats.append("Weight: " + currentWeight() + "kg / " + maxWeight + "kg" + "\n");
+        stats.append("Weight: " + String.format("%.2f", currentWeight()) + "kg / " + String.format("%.2f", maxWeight)
+                + "kg" + "\n");
         stats.append("Equipped Items: " + equippedItems.size() + "\n");
         for (EquipSlot equipSlot : equippedItems.keySet()) {
             stats.append(equipSlot + ": " + equippedItems.get(equipSlot).shortInfo() + "\n");

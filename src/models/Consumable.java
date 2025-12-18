@@ -49,11 +49,12 @@ public class Consumable extends Item {
     @Override
     public String shortInfo() {
         double stackWeight = getWeight() * quantity;
-        return super.shortInfo() + "  |  Quantity: " + quantity + "  |  Max Stack: " + maxStack + "  |  Stack Weight: " + stackWeight + " kg";
+        return super.shortInfo() + "  |  Quantity: " + quantity + "  |  Max Stack: " + maxStack + "  |  Stack Weight: "
+                + String.format("%.2f", stackWeight) + " kg";
     }
 
     public void setQuantity(int quantity) throws InvalidQuantityException {
-        if (quantity < 0 || quantity > maxStack){
+        if (quantity < 0 || quantity > maxStack) {
             throw new InvalidQuantityException("Quantity must be between 0 and " + maxStack);
         }
         this.quantity = quantity;

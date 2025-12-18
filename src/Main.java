@@ -163,7 +163,7 @@ public class Main {
         // Print the list of armors
         printArmorsList();
         // Get user input for the ID of the armor to add
-        int id = Tools.validateInt(input, "Enter the ID of the armor you want to add:");
+        int id = Tools.validateInt(input, "Enter the ID of the armor you want to add");
         Item item = null;
         // Get item by ID from the master item list
         try {
@@ -181,7 +181,7 @@ public class Main {
             return; // Exit the method if the item is not an armor
         }
         // Validate quantity
-        int quantity = Tools.validateInt(input, "Enter the quantity of the armor you want to add:");
+        int quantity = Tools.validateInt(input, "Enter the quantity of the armor you want to add");
         // Add armor to inventory using the add method from the inventory system
         for (int i = 0; i < quantity; i++) {
             try {
@@ -202,7 +202,7 @@ public class Main {
         // Print the list of weapons
         printWeaponsList();
         // Get user input for the ID of the weapon to add
-        int id = Tools.validateInt(input, "Enter the ID of the weapon you want to add:");
+        int id = Tools.validateInt(input, "Enter the ID of the weapon you want to add");
         Item item = null;
         // Get item by ID from the master item list
         try {
@@ -239,7 +239,7 @@ public class Main {
 
     private static void promptAddConsumable() {
         printConsumablesList();
-        int id = Tools.validateInt(input, "Enter the ID of the consumable you want to add:");
+        int id = Tools.validateInt(input, "Enter the ID of the consumable you want to add");
         Item item = null;
         // Get item by ID
         try {
@@ -256,7 +256,7 @@ public class Main {
         }
         // Validate quantity
         int quantity = Tools.validateInt(input,
-                "Enter the quantity of the consumable you want to add: (max: " + consumable.getMaxStack() + ")");
+                "Enter the quantity of the consumable you want to add (max: " + consumable.getMaxStack() + ")");
         // Set quantity
         try {
             consumable.setQuantity(quantity);
@@ -284,7 +284,7 @@ public class Main {
         Tools.printToConsole(inventorySystem.getInventory().toString(), true);
 
         // Get user input for the ID of the item to remove
-        int id = Tools.validateInt(input, "Enter the ID of the item you want to remove:");
+        int id = Tools.validateInt(input, "Enter the ID of the item you want to remove");
         try {
             inventorySystem.remove(id); // Use the remove method from the inventory system to remove the item
             Tools.printToConsole("Item removed successfully.", false);
@@ -302,7 +302,7 @@ public class Main {
         Tools.printToConsole(inventorySystem.getInventory().toString(), true);
 
         // Get user input for the ID of the item to equip
-        int id = Tools.validateInt(input, "Enter the ID of the item you want to equip:");
+        int id = Tools.validateInt(input, "Enter the ID of the item you want to equip");
         try {
             inventorySystem.equip(id); // Use the equip method from the inventory system to equip the item
         } catch (ItemNotFoundException | InvalidEquipSlotException e) {
@@ -316,7 +316,7 @@ public class Main {
         // Print the equipment stats
         Tools.printToConsole(inventorySystem.getEquipmentStats(), true);
         // Get user input for the equip slot of the item to unequip
-        EquipSlot equipSlot = Tools.validateEquipSlot(input, "Enter the equip slot of the item you want to unequip:");
+        EquipSlot equipSlot = Tools.validateEquipSlot(input, "Enter the equip slot of the item you want to unequip");
         try {
             inventorySystem.unequip(equipSlot); // Use the unequip method from the inventory system to unequip the item
         } catch (InvalidEquipSlotException e) {
@@ -395,7 +395,7 @@ public class Main {
         Tools.printToConsole(inventorySystem.getInventory().toString(), true);
 
         // Get user input for the ID of the item to find
-        int id = Tools.validateInt(input, "Enter the ID of the item you want to find:");
+        int id = Tools.validateInt(input, "Enter the ID of the item you want to find");
 
         // Initialize variables
         String itemName = "";
@@ -447,7 +447,7 @@ public class Main {
         Tools.printToConsole("============== ARMORS LIST ==============", false);
         for (Item item : itemsList) {
             if (item instanceof Armor) {
-                Tools.printToConsole("#" + item.getId() + " - " + item.getName() + " - " + item.getWeight() + "kg"
+                Tools.printToConsole("#" + item.getId() + " - " + item.getName() + " - " + String.format("%.2f", item.getWeight()) + "kg"
                         + " - " + item.getType(), false);
             }
         }
@@ -458,7 +458,7 @@ public class Main {
         Tools.printToConsole("============== WEAPONS LIST ==============", false);
         for (Item item : itemsList) {
             if (item instanceof Weapon) {
-                Tools.printToConsole("#" + item.getId() + " - " + item.getName() + " - " + item.getWeight() + "kg"
+                Tools.printToConsole("#" + item.getId() + " - " + item.getName() + " - " + String.format("%.2f", item.getWeight()) + "kg"
                         + " - " + item.getType(), false);
             }
         }
@@ -469,7 +469,7 @@ public class Main {
         Tools.printToConsole("============== CONSUMABLES LIST ==============", false);
         for (Item item : itemsList) {
             if (item instanceof Consumable) {
-                Tools.printToConsole("#" + item.getId() + " - " + item.getName() + " - " + item.getWeight() + "kg"
+                Tools.printToConsole("#" + item.getId() + " - " + item.getName() + " - " + String.format("%.2f", item.getWeight()) + "kg"
                         + " - " + item.getType(), false);
             }
         }
