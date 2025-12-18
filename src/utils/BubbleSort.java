@@ -5,6 +5,9 @@ import java.util.List;
 import models.Item;
 
 public class BubbleSort {
+    private BubbleSort() {
+    }
+
     public static List<Item> sortByWeight(List<Item> slots) {
         // Copy the list
         List<Item> array = slots;

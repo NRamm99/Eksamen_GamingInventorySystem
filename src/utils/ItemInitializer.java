@@ -10,6 +10,8 @@ import models.Item;
 import models.Weapon;
 
 public class ItemInitializer {
+    private ItemInitializer() {
+    }
 
     public static List<Item> initializeItemsList() {
         List<Item> itemsList = new ArrayList<>();

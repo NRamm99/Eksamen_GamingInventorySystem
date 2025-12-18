@@ -21,12 +21,6 @@ public class InventorySystem {
             this.inventory = new Inventory(); // Create a new inventory if there is an error loading the inventory from
                                               // the file
             System.out.println("Error loading inventory: " + e.getMessage());
-        } catch (InvalidQuantityException e) {
-            System.out.println("Corrupt inventory data: " + e.getMessage()); // Print an error message if the inventory
-                                                                             // data is corrupt
-            System.out.println("Fix: 'data/inventory.txt' and restart the program "); // Print a message to fix the
-                                                                                      // inventory data
-            System.exit(1);
         }
         // Print a success message if the inventory is loaded successfully
         System.out.println("Inventory loaded successfully");

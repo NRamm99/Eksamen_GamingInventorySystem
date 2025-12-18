@@ -6,7 +6,6 @@ import java.nio.file.*;
 import java.util.List;
 
 import enums.EquipSlot;
-import exceptions.InvalidQuantityException;
 import models.Armor;
 import models.Consumable;
 import models.Inventory;
@@ -14,6 +13,9 @@ import models.Item;
 import models.Weapon;
 
 public class FileHandler {
+    private FileHandler() {
+    }
+
     private static final String INVENTORY_PATH = "data/inventory.txt";
 
     public static void save(Inventory inv) throws IOException {
@@ -36,7 +38,8 @@ public class FileHandler {
 
             for (var e : inv.getEquippedItems().entrySet()) {
                 if (e.getValue() instanceof Weapon we) {
-                    w.write("E;" + e.getKey() + ";" + "W;" + we.getId() + ";" + we.getName() + ";" + we.getWeight() + ";"
+                    w.write("E;" + e.getKey() + ";" + "W;" + we.getId() + ";" + we.getName() + ";" + we.getWeight()
+                            + ";"
                             + we.getEquipSlot()
                             + ";" + we.getDamage() + ";" + we.isTwoHanded());
                 }
@@ -50,7 +53,7 @@ public class FileHandler {
         }
     }
 
-    public static Inventory load() throws IOException, InvalidQuantityException {
+    public static Inventory load() throws IOException {
         Inventory inv = new Inventory();
         List<String> lines = Files.readAllLines(Paths.get(INVENTORY_PATH));
 
@@ -76,6 +79,7 @@ public class FileHandler {
                         inv.getEquippedItems().put(EquipSlot.valueOf(p[1]), armor);
                     }
                 }
+                default -> throw new IOException("Invalid item type: " + p[0]);
             }
         }
         return inv;
